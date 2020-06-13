@@ -1,12 +1,13 @@
 <template>
-  <v-footer color="accent" class="justify-center elevation-5" app>
+  <v-footer class="justify-center" color="primary" app>
     <v-btn
       text
       class="title"
       href="https://github.com/nhzaci/ClickClackV2"
       target="_blank"
     >
-      Contribute
+      <v-icon class="mx-2">mdi-github</v-icon>
+      Github
     </v-btn>
   </v-footer>
 </template>

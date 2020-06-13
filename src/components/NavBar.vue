@@ -6,13 +6,6 @@
   >
     <v-row align="center" justify="center">
       <v-toolbar-title>ClickClack</v-toolbar-title>
-      <v-switch 
-        :prepend-icon="switchIcon"
-        color="contrast"
-        v-model="$vuetify.theme.dark"
-        absolute
-        right
-      ></v-switch>
     </v-row>
   </v-app-bar>
 </template>
