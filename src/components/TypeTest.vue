@@ -37,78 +37,85 @@
     <!-- End of text box col -->
 
     <!-- Input box row at start of game -->
-    <v-row 
-      v-if="!isCompleted"
-    >
-      <v-col cols="8" md="10">
-        <v-sheet
-          height="100%"
-          width="100%"
-          :class="textSize"
-          color="accent"
-          elevation="5"
+    <div v-if="!isCompleted">
+      <v-expand-transition>
+        <v-row 
+          v-if="!isCompleted"
         >
-          <input 
-            type="text"
-            v-model="inputText" 
-            class="pa-4 white--text" 
-            id="input-field" 
-            placeholder="Type Here" 
-            @keyup.space="addInput" 
-            @input="startTimer" 
-            @keyup.escape="restart"
-            autofocus
-          >
-         </v-sheet>
-      </v-col>
-      <v-col cols="4" md="2">
-        <v-btn 
-          tile 
-          height="100%" 
-          width="100%" 
-          :class="buttonSize"
-          color="accent" 
-          elevation="5"
-          @click="restart"
-        >
-          Restart
-        </v-btn>
-      </v-col>
-    </v-row>
-    <!-- End of Input box row at start of game -->
+          <v-col cols="8" md="10">
+            <v-sheet
+              height="100%"
+              width="100%"
+              :class="textSize"
+              color="accent"
+              elevation="5"
+            >
+              <input 
+                type="text"
+                v-model="inputText" 
+                class="pa-4 white--text" 
+                id="input-field" 
+                placeholder="Type Here" 
+                @keyup.space="addInput" 
+                @input="startTimer" 
+                @keyup.escape="restart"
+                autofocus
+              >
+             </v-sheet>
+          </v-col>
+          <v-col cols="4" md="2">
+            <v-btn 
+              tile 
+              height="100%" 
+              width="100%" 
+              :class="buttonSize"
+              color="accent" 
+              elevation="5"
+              @click="restart"
+            >
+              Restart
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!-- End of Input box row at start of game -->
+      </v-expand-transition>
+    </div>
 
     <!-- Row with stats for end of game -->
-    <v-row 
-      v-else
-      justify="center"
-      align="center"
-    >
-      <v-col cols="12">
-        <v-sheet
-          height="100%"
-          width="100%"
-          :class="textSize"
-          class="pa-5 text-center white--text"
-          color="accent"
-          elevation="5"
+    <div v-else>
+      <v-expand-transition>
+        <v-row 
+          justify="center"
+          align="center"
         >
-          <span>WPM: {{ getStats()[0] }} ACC: {{ getStats()[1] }}%</span>
-        </v-sheet>
-      </v-col>
-      <v-col cols="12" align="center">
-        <v-btn 
-          tile 
-          color="contrast" 
-          class="primary--text"
-          elevation="5"
-          @click="restart"
-          x-large
-        >
-          Restart
-        </v-btn>
-      </v-col>
-    </v-row>
-    <!-- End of row with stats for end of game -->
+          <v-col cols="12">
+            <v-sheet
+              height="100%"
+              width="100%"
+              :class="textSize"
+              class="pa-5 text-center white--text"
+              color="accent"
+              elevation="5"
+            >
+              <span>WPM: {{ getStats()[0] }} ACC: {{ getStats()[1] }}%</span>
+            </v-sheet>
+          </v-col>
+          <v-col cols="12" align="center">
+            <v-btn 
+              tile 
+              color="contrast" 
+              class="primary--text"
+              elevation="5"
+              @click="restart"
+              x-large
+            >
+              Restart
+            </v-btn>
+          </v-col>
+        </v-row>
+        <!-- End of row with stats for end of game -->
+      </v-expand-transition>
+    </div>
 
   </v-container>
 </template>
@@ -196,12 +203,7 @@ export default {
     textBoxText() {
       // Styling for current word
       if (!this.isCompleted) {
-        let currentWord = `
-          <span 
-            style='
-              font-weight: bold; 
-              text-decoration: underline;'
-          >${this.testWordList[this.testWordListHTML.length]}</span>`
+        let currentWord = `<span style="font-weight: bold; text-decoration: underline;">${this.testWordList[this.testWordListHTML.length]}</span>`
         return this.testWordListHTML.join(' ') + currentWord + ' ' + this.testWordList.slice(this.testWordListHTML.length + 1).join(' ')
       }
       return this.testWordListHTML.join(' ')
@@ -229,6 +231,7 @@ export default {
     border-style: solid;
     border-color: white;
     border-width: 1px;
+    box-shadow: inset 0 0 2px 2px darkgray 
   }
 }
 </style>
