@@ -74,7 +74,7 @@
                 class="pa-4 white--text" 
                 id="input-field" 
                 placeholder="Type Here" 
-                @keyup.space="addInput" 
+                @keydown.space="addInput" 
                 @input="startTimer" 
                 @keyup.escape="restart"
                 autofocus
@@ -161,6 +161,7 @@ export default {
     startTimer() {
       // If user input is empty and start time is not set
       if (this.startTime === 0) {
+        console.log("Timer started")
         this.startTime = Date.now()
       }
     },
@@ -171,8 +172,10 @@ export default {
       // Check if accidental press of space or is round is complete
       if (this.inputText !== " " && !this.isCompleted) {
         // If it is not, add to userInputArray
-        this.userInputArray.push(this.inputText.trim()) // Push word into user array
+        let temp = this.inputText.trim()
+        console.log(temp)
         this.inputText = "" // Empty Text Input
+        this.userInputArray.push(temp) // Push word into user array
         this.appendWordListHTML();
         if (this.testWordList.length === this.userInputArray.length) {
           this.gameComplete()
@@ -182,7 +185,7 @@ export default {
     appendWordListHTML() {
       // Adds colours to words already typed. If correct, will be green, else it'll be red
       let currLength = this.testWordListHTML.length
-      if (this.userInputArray[currLength] === this.testWordList[currLength]) {
+      if (this.userInputArray[currLength].trim() === this.testWordList[currLength]) {
         this.testWordListHTML.push(`<span class="green--text darken-2">${this.testWordList[currLength]} </span>`)
       } else {
         this.testWordListHTML.push(`<span class="red--text darken-2">${this.testWordList[currLength]} </span>`)
@@ -206,8 +209,8 @@ export default {
       let totalChar = totalCorrectChars // Caches number of spaces
       let totalTime = (this.endTime - this.startTime) / 1000 / 60 // Total duration in minutes
       for (let i = 0; i < this.testWordList.length; i++) {
-        totalChar += this.userInputArray[i].length
-        if (this.testWordList[i] === this.userInputArray[i]) {
+        totalChar += this.userInputArray[i].trim().length
+        if (this.testWordList[i] === this.userInputArray[i].trim()) {
           totalCorrectChars += this.userInputArray[i].length
         }
       }
@@ -292,7 +295,7 @@ export default {
       } else {
         // Resetting the test so timer gets reset and html is empty
         this.testWordListHTML = []
-        this.startTimer = 0
+        this.startTime = 0
       }
     }
   }
