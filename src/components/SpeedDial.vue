@@ -15,7 +15,7 @@
       <template v-slot:activator="{ on }">
         <v-btn
           fab
-          color="accent"
+          color="secondary"
           v-on="on"
           @click="setDialog(!dialog)"
         >
