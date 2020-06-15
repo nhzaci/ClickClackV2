@@ -8,6 +8,7 @@
         <router-view></router-view>
       </v-expand-transition>
       <SpeedDial />
+      <HelpDialog />
     </v-main>
 
     <Footer />
@@ -18,6 +19,7 @@
 <script>
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
+import HelpDialog from '@/components/HelpDialog'
 import SpeedDial from '@/components/SpeedDial'
 
 export default {
@@ -25,6 +27,7 @@ export default {
   components: {
     NavBar,
     Footer,
+    HelpDialog,
     SpeedDial
   },
 };

@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    dialog: false,
   },
   mutations: {
+    setDialog (state, bool) {
+      state.dialog = bool
+    }
   },
   actions: {
   },

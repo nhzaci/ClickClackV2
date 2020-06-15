@@ -12,10 +12,15 @@
           color="accent"
           elevation="5"
         >
-          <v-row class="px-2">
-            Options
+          <v-row class="px-5" align="center">
+            <span class="me-1">Word Selector: </span>
+            <span class="mx-1">10</span>
+            <span class="mx-1">25</span>
+            <span class="mx-1">50</span>
+            <span class="mx-1">100</span>
+            <span class="mx-1">250</span>
             <v-spacer></v-spacer>
-            Average calculation
+            <span>WPM: {{ userPerfAverage[0] }} ACC: {{ userPerfAverage[1] }}</span>
           </v-row>
         </v-sheet>
       </v-col>
@@ -126,7 +131,8 @@ import wordList from '../assets/words/words.json'
 export default {
   data: () => ({
     inputText: '', // User Input
-    noWords: 5, // Number of words to get from word list
+    noWords: 10, // Number of words to get from word list
+    noWordsList: [10, 25, 50, 100, 250], // Range of available words
     testWordList: [], // Current array of selected words for user
     testWordListHTML: [], // Word list with html for colours and stuff
     userInputArray: [], // Array for storing user input
@@ -192,11 +198,28 @@ export default {
           totalCorrectChars += this.userInputArray[i].length
         }
       }
+      // Save user perf into cookie
+      this.savePerformance(totalCorrectChars, totalChar, totalTime)
       // 5 char per word
       wpm = Math.round(totalCorrectChars / 5 / totalTime * 100) / 100 
-      acc = Math.round(totalCorrectChars / totalChar * 100) 
+      acc = Math.round(totalCorrectChars / totalChar * 100)
       return [wpm, acc]
-    }
+    },
+    savePerformance(totalCorrectChars, totalChar, totalTime) {
+      if (this.$cookies.get('user')) {
+        let cookie = this.$cookies.get('user')
+        if (cookie.totalCorrectChars) {
+          cookie.totalCorrectChars += totalCorrectChars
+          cookie.totalChar += totalChar
+          cookie.totalTime += totalTime
+        } else {
+          cookie.totalCorrectChars = totalCorrectChars
+          cookie.totalChar = totalChar
+          cookie.totalTime = totalTime
+        }
+        this.$cookies.set('user', cookie)
+      }
+    },
   },
   computed: {
     // Computed properties for game functions and stats
@@ -208,6 +231,20 @@ export default {
       }
       return this.testWordListHTML.join(' ')
     },
+    userPerfAverage() {
+      if (this.$cookies.get('user')) {
+        let cookie = this.$cookies.get('user')
+        if (cookie.totalCorrectChars) {
+          let totalCorrectChars = cookie.totalCorrectChars
+          let totalChar = cookie.totalChar
+          let totalTime = cookie.totalTime
+          let wpm = Math.round(totalCorrectChars / 5 / totalTime * 100) / 100 
+          let acc = Math.round(totalCorrectChars / totalChar * 100)
+          return [wpm, acc]
+        }
+      }
+      return ['xxx', 'xxx']
+    },
     // Computed properties for dynamic sizing
     textSize() {
       return (this.$vuetify.breakpoint.mdAndUp) ? 'headline' : 'subtitle-1' 
@@ -217,7 +254,34 @@ export default {
     }
   },
   created() {
+    // Try to get user's settings and prev performances in cookies
+    if (this.$cookies.get('user')) {
+      let cookie = this.$cookies.get('user')
+      this.noWords = cookie.noWords
+    } else {
+      // Initialise cookie on create if not present
+      this.$cookies.set('user', {
+        noWords: this.noWords
+      })
+    }
     this.getTestWordList() // initialise test word list on create
+  }, 
+  watch: {
+    noWords: function(val) {
+      // Whenever user changes the word count, cache the count in cookie
+      this.getTestWordList()
+      let cookie = this.$cookies.get('user')
+      cookie.noWords = val
+      this.$cookies.set('user', cookie)
+      // If completed, refresh to get update
+      if (this.isCompleted) {
+        this.restart()
+      } else {
+        // Resetting the test so timer gets reset and html is empty
+        this.testWordListHTML = []
+        this.startTimer = 0
+      }
+    }
   }
 }
 </script>
