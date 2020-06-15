@@ -12,15 +12,28 @@
           color="accent"
           elevation="5"
         >
-          <v-row class="px-5" align="center">
-            <span class="me-1">Word Selector: </span>
-            <span class="mx-1">10</span>
-            <span class="mx-1">25</span>
-            <span class="mx-1">50</span>
-            <span class="mx-1">100</span>
-            <span class="mx-1">250</span>
-            <v-spacer></v-spacer>
-            <span>WPM: {{ userPerfAverage[0] }} ACC: {{ userPerfAverage[1] }}</span>
+          <v-row class="px-md-5 px-2" align="center" justify="space-between">
+            <v-col cols="12" md="8" class="ma-0 pa-0 text-center text-md-left" style="display: flex; align-items:center">
+              <span class="me-1">Word Selector </span>
+              <v-btn-toggle 
+                mandatory 
+                v-model="noWords" 
+                background-color="transparent"
+                color="white"
+                borderless
+                dark
+                tile
+              >
+                <v-btn text :class="buttonSize">10</v-btn>
+                <v-btn text :class="buttonSize">25</v-btn>
+                <v-btn text :class="buttonSize">50</v-btn>
+                <v-btn text :class="buttonSize">100</v-btn>
+                <v-btn text :class="buttonSize">250</v-btn>
+              </v-btn-toggle>
+            </v-col>
+            <v-col cols="12" md="4" class="ma-0 pa-0 text-md-right text-center">
+              <span>WPM: {{ userPerfAverage[0] }} ACC: {{ userPerfAverage[1] }}</span>
+            </v-col>
           </v-row>
         </v-sheet>
       </v-col>
@@ -131,7 +144,7 @@ import wordList from '../assets/words/words.json'
 export default {
   data: () => ({
     inputText: '', // User Input
-    noWords: 10, // Number of words to get from word list
+    noWords: 0, // Word index to get from word list
     noWordsList: [10, 25, 50, 100, 250], // Range of available words
     testWordList: [], // Current array of selected words for user
     testWordListHTML: [], // Word list with html for colours and stuff
@@ -179,7 +192,7 @@ export default {
       // Function for generating rand numbers
       const getRndInt = (max) => Math.floor(Math.random() * max)
       let randNumArray = []
-      for (let i = 0; i < this.noWords; i++) {
+      for (let i = 0; i < this.noWordsList[this.noWords]; i++) {
         // Fill up array to number of words required
         randNumArray.push(getRndInt(wordList.length))
       }
@@ -243,7 +256,7 @@ export default {
           return [wpm, acc]
         }
       }
-      return ['xxx', 'xxx']
+      return ['TBC', 'TBC']
     },
     // Computed properties for dynamic sizing
     textSize() {
