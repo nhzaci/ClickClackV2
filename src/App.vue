@@ -24,6 +24,12 @@ import SpeedDial from '@/components/SpeedDial'
 
 export default {
   name: 'App',
+  metaInfo: {
+    titleTemplate: '%s | ClickClack',
+    link: [
+      { rel: 'favicon', href: 'favicon.ico'}
+    ]
+  },
   components: {
     NavBar,
     Footer,

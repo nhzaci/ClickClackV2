@@ -17,7 +17,13 @@ import TypeTest from '@/components/TypeTest'
 
 export default {
   name: 'Home',
-  components: {
+  metaInfo: {
+    title: 'Home',
+    meta: [
+      { vmid: 'description', name: 'description', content: 'A minimalistic typing speed test built with a meterial design aesthetic' }
+    ]
+  },
+   components: {
     TypeTest
   }
 }
