@@ -32,7 +32,7 @@
               </v-btn-toggle>
             </v-col>
             <v-col cols="12" md="4" class="ma-0 pa-0 text-md-right text-center">
-              <span>WPM: {{ userPerfAverage[0] }} ACC: {{ userPerfAverage[1] }}</span>
+              <span>WPM: {{ userPerfAverage[0] }} ACC: {{ userPerfAverage[1] }}%</span>
             </v-col>
           </v-row>
         </v-sheet>
@@ -172,8 +172,7 @@ export default {
       // Check if accidental press of space or is round is complete
       if (this.inputText !== " " && !this.isCompleted) {
         // If it is not, add to userInputArray
-        let temp = this.inputText.trim()
-        console.log(temp)
+        let temp = this.inputText.trim() // Cache current input in another var
         this.inputText = "" // Empty Text Input
         this.userInputArray.push(temp) // Push word into user array
         this.appendWordListHTML();
@@ -295,6 +294,7 @@ export default {
       } else {
         // Resetting the test so timer gets reset and html is empty
         this.testWordListHTML = []
+        this.userInputArray = []
         this.startTime = 0
       }
     }
@@ -311,7 +311,6 @@ export default {
     border-style: solid;
     border-color: white;
     border-width: 1px;
-    box-shadow: inset 0 0 2px 2px darkgray 
   }
 }
 </style>
