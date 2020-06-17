@@ -262,7 +262,7 @@ export default {
       return this.testWordListHTML.join(' ')
     },
     userPerfAverage() {
-      if (localStorage.getItem('totalCorrectChars') != 0 && localStorage.getItem('totalCorrectChar')) {
+      if (localStorage.getItem('totalCorrectChars') != null && localStorage.getItem('totalCorrectChars') != 0) {
         let totalCorrectChars = localStorage.getItem('totalCorrectChars')
         let totalChar = localStorage.getItem('totalChar')
         let totalTime = localStorage.getItem('totalTime')
