@@ -281,7 +281,7 @@ export default {
   created() {
     // Try to get user's settings and prev performances in cookies
     if (localStorage.getItem('noWords')) {
-      this.noWords = localStorage.getItem('noWords')
+      this.noWords = Number(localStorage.getItem('noWords'))
     } else {
       // Initialise cookie on create if not present
       localStorage.setItem('noWords', this.noWords)
