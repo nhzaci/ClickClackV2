@@ -4,9 +4,7 @@
     <NavBar />
 
     <v-main>
-      <v-expand-transition>
-        <router-view></router-view>
-      </v-expand-transition>
+      <router-view></router-view>
       <SpeedDial />
       <HelpDialog />
     </v-main>

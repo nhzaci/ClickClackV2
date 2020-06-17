@@ -72,33 +72,21 @@ export default {
   methods: {
     ...mapMutations(['setDialog']),
     resetAverage() {
-      if (this.$cookies.get('user').totalCorrectChars) {
-        let cookie = this.$cookies.get('user')
-        cookie.totalCorrectChars = 0
-        cookie.totalChar = 0
-        cookie.totalTime = 0
-        this.$cookies.set('user', cookie)
-      }
+      localStorage.totalCorrectChars = 0
+      localStorage.totalChar = 0
+      localStorage.totalTime = 0
       // Refresh browser to update
       window.location.reload()
     },
     toggleNightMode() {
       // Cache dark mode selection
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      let cookie = this.$cookies.get('user')
-      cookie.dark = this.$vuetify.theme.dark
-      this.$cookies.set('user', cookie)
+      localStorage.setItem('dark', this.$vuetify.theme.dark)
     },
   },
   computed: {
     ...mapState(['dialog'])
   },
-  created() {
-    // Set dark mode boolean if initialised
-    if (this.$cookies.get('user').dark) {
-      this.$vuetify.theme.dark = this.$cookies.get('user').dark
-    }
-  }
 }
 </script>
 

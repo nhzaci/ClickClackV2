@@ -3,8 +3,11 @@ import Vuetify from 'vuetify/lib';
 
 Vue.use(Vuetify);
 
+var darkBool = (localStorage.getItem('dark') == 'true') ? true : false
+
 export default new Vuetify({
   theme: {
+    dark: darkBool,
     themes: {
       light: {
         primary: "#fff4e3",

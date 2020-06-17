@@ -221,18 +221,33 @@ export default {
       return [wpm, acc]
     },
     savePerformance(totalCorrectChars, totalChar, totalTime) {
-      if (this.$cookies.get('user')) {
-        let cookie = this.$cookies.get('user')
-        if (cookie.totalCorrectChars) {
-          cookie.totalCorrectChars += totalCorrectChars
-          cookie.totalChar += totalChar
-          cookie.totalTime += totalTime
-        } else {
-          cookie.totalCorrectChars = totalCorrectChars
-          cookie.totalChar = totalChar
-          cookie.totalTime = totalTime
-        }
-        this.$cookies.set('user', cookie)
+      if (localStorage.getItem('totalCorrectChars')) {
+        localStorage.setItem(
+          'totalCorrectChars', 
+          Number(localStorage.getItem('totalCorrectChars')) + totalCorrectChars
+        )
+        localStorage.setItem(
+          'totalChar', 
+          Number(localStorage.getItem('totalChar')) + totalChar 
+        )
+        localStorage.setItem(
+          'totalTime', 
+          Number(localStorage.getItem('totalTime')) + totalTime
+        )
+      } else {
+        localStorage.setItem(
+          'totalCorrectChars', 
+          totalCorrectChars
+        )
+        localStorage.setItem(
+          'totalChar', 
+          totalChar 
+        )
+        localStorage.setItem(
+          'totalTime', 
+          totalTime
+        )
+
       }
     },
   },
@@ -247,16 +262,13 @@ export default {
       return this.testWordListHTML.join(' ')
     },
     userPerfAverage() {
-      if (this.$cookies.get('user')) {
-        let cookie = this.$cookies.get('user')
-        if (cookie.totalCorrectChars) {
-          let totalCorrectChars = cookie.totalCorrectChars
-          let totalChar = cookie.totalChar
-          let totalTime = cookie.totalTime
-          let wpm = Math.round(totalCorrectChars / 5 / totalTime * 100) / 100 
-          let acc = Math.round(totalCorrectChars / totalChar * 100)
-          return [wpm, acc]
-        }
+      if (localStorage.getItem('totalCorrectChars') != 0 && localStorage.getItem('totalCorrectChar')) {
+        let totalCorrectChars = localStorage.getItem('totalCorrectChars')
+        let totalChar = localStorage.getItem('totalChar')
+        let totalTime = localStorage.getItem('totalTime')
+        let wpm = Math.round(totalCorrectChars / 5 / totalTime * 100) / 100 
+        let acc = Math.round(totalCorrectChars / totalChar * 100)
+        return [wpm, acc]
       }
       return ['TBC', 'TBC']
     },
@@ -270,14 +282,11 @@ export default {
   },
   created() {
     // Try to get user's settings and prev performances in cookies
-    if (this.$cookies.get('user')) {
-      let cookie = this.$cookies.get('user')
-      this.noWords = cookie.noWords
+    if (localStorage.getItem('noWords')) {
+      this.noWords = localStorage.getItem('noWords')
     } else {
       // Initialise cookie on create if not present
-      this.$cookies.set('user', {
-        noWords: this.noWords
-      })
+      localStorage.setItem('noWords', this.noWords)
     }
     this.getTestWordList() // initialise test word list on create
   }, 
@@ -285,9 +294,7 @@ export default {
     noWords: function(val) {
       // Whenever user changes the word count, cache the count in cookie
       this.getTestWordList()
-      let cookie = this.$cookies.get('user')
-      cookie.noWords = val
-      this.$cookies.set('user', cookie)
+      localStorage.setItem('noWords', val)
       // If completed, refresh to get update
       if (this.isCompleted) {
         this.restart()
