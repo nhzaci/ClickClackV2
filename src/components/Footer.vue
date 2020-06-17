@@ -6,7 +6,7 @@
       href="https://github.com/nhzaci/ClickClackV2"
       target="_blank"
     >
-      <v-icon class="mx-2">mdi-github</v-icon>
+      <v-icon class="me-2">mdi-github</v-icon>
       Github
     </v-btn>
   </v-footer>

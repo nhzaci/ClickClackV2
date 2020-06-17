@@ -56,83 +56,79 @@
 
     <!-- Input box row at start of game -->
     <div v-if="!isCompleted">
-      <v-expand-transition>
-        <v-row 
-          v-if="!isCompleted"
-        >
-          <v-col cols="8" md="10">
-            <v-sheet
-              height="100%"
-              width="100%"
-              :class="textSize"
-              color="accent"
-              elevation="5"
+      <v-row 
+        v-if="!isCompleted"
+      >
+        <v-col cols="8" md="10">
+          <v-sheet
+            height="100%"
+            width="100%"
+            :class="textSize"
+            color="accent"
+            elevation="5"
+          >
+            <input 
+              type="text"
+              v-model="inputText" 
+              class="pa-4 white--text" 
+              id="input-field" 
+              placeholder="Type Here" 
+              @keydown.space="addInput" 
+              @input="startTimer" 
+              @keyup.escape="restart"
+              autofocus
             >
-              <input 
-                type="text"
-                v-model="inputText" 
-                class="pa-4 white--text" 
-                id="input-field" 
-                placeholder="Type Here" 
-                @keydown.space="addInput" 
-                @input="startTimer" 
-                @keyup.escape="restart"
-                autofocus
-              >
-             </v-sheet>
-          </v-col>
-          <v-col cols="4" md="2">
-            <v-btn 
-              tile 
-              height="100%" 
-              width="100%" 
-              :class="buttonSize"
-              color="accent" 
-              elevation="5"
-              @click="restart"
-            >
-              Restart
-            </v-btn>
-          </v-col>
-        </v-row>
-        <!-- End of Input box row at start of game -->
-      </v-expand-transition>
+           </v-sheet>
+        </v-col>
+        <v-col cols="4" md="2">
+          <v-btn 
+            tile 
+            height="100%" 
+            width="100%" 
+            :class="buttonSize"
+            color="accent" 
+            elevation="5"
+            @click="restart"
+          >
+            Restart
+          </v-btn>
+        </v-col>
+      </v-row>
+      <!-- End of Input box row at start of game -->
     </div>
 
     <!-- Row with stats for end of game -->
     <div v-else>
-      <v-expand-transition>
-        <v-row 
-          justify="center"
-          align="center"
-        >
-          <v-col cols="12">
-            <v-sheet
-              height="100%"
-              width="100%"
-              :class="textSize"
-              class="pa-5 text-center white--text"
-              color="accent"
-              elevation="5"
-            >
-              <span>WPM: {{ getStats()[0] }} ACC: {{ getStats()[1] }}%</span>
-            </v-sheet>
-          </v-col>
-          <v-col cols="12" align="center">
-            <v-btn 
-              tile 
-              color="contrast" 
-              class="primary--text"
-              elevation="5"
-              @click="restart"
-              x-large
-            >
-              Restart
-            </v-btn>
-          </v-col>
-        </v-row>
-        <!-- End of row with stats for end of game -->
-      </v-expand-transition>
+      <v-row 
+        justify="center"
+        align="center"
+      >
+        <v-col cols="12">
+          <v-sheet
+            height="100%"
+            width="100%"
+            :class="textSize"
+            class="pa-5 text-center white--text"
+            color="accent"
+            elevation="5"
+          >
+            <span>WPM: {{ getStats()[0] }} ACC: {{ getStats()[1] }}%</span>
+          </v-sheet>
+        </v-col>
+        <v-col cols="12" align="center">
+          <v-btn 
+            tile 
+            color="contrast" 
+            class="primary--text"
+            elevation="5"
+            @click="restart"
+            x-large
+          >
+            Restart
+          </v-btn>
+        </v-col>
+      </v-row>
+      <!-- End of row with stats for end of game -->
     </div>
 
   </v-container>
@@ -161,7 +157,6 @@ export default {
     startTimer() {
       // If user input is empty and start time is not set
       if (this.startTime === 0) {
-        console.log("Timer started")
         this.startTime = Date.now()
       }
     },
@@ -221,6 +216,7 @@ export default {
       return [wpm, acc]
     },
     savePerformance(totalCorrectChars, totalChar, totalTime) {
+      //Check if localStorage already stored previous attempts
       if (localStorage.getItem('totalCorrectChars')) {
         localStorage.setItem(
           'totalCorrectChars', 
@@ -235,6 +231,7 @@ export default {
           Number(localStorage.getItem('totalTime')) + totalTime
         )
       } else {
+        // Else, create them
         localStorage.setItem(
           'totalCorrectChars', 
           totalCorrectChars
@@ -262,6 +259,7 @@ export default {
       return this.testWordListHTML.join(' ')
     },
     userPerfAverage() {
+      // Checks if past attempts have been stored in local storage
       if (localStorage.getItem('totalCorrectChars') != null && localStorage.getItem('totalCorrectChars') != 0) {
         let totalCorrectChars = localStorage.getItem('totalCorrectChars')
         let totalChar = localStorage.getItem('totalChar')

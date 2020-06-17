@@ -67,7 +67,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   data: () => ({
-    fab: false,
+    fab: false, // For speed dial to be open or closed
   }),
   methods: {
     ...mapMutations(['setDialog']),
@@ -79,8 +79,8 @@ export default {
       window.location.reload()
     },
     toggleNightMode() {
-      // Cache dark mode selection
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      // Cache dark mode selection
       localStorage.setItem('dark', this.$vuetify.theme.dark)
     },
   },

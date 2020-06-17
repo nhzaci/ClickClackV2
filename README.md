@@ -1,4 +1,9 @@
-# click-clack2
+# ClickClack V2
+V2 of my typing speed test site, ClickClack, which is completely overhauled from ground up with better written code which would be more modular and easier to debug. It is now made in VueJs with styling done in Vuetify.
+
+### New Features
+- Dark / Light mode
+- Speed dial for quick settings
 
 ## Project setup
 ```
@@ -20,5 +25,3 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
